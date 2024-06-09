@@ -174,31 +174,105 @@ int check_all_even(list *my_list)
 
 void printMixed(node *word1, node *word2)
 {
-    // Consider using a linked list to store a string
-    // where each node in order stores one letter in the string
-    // the struct used for a single node is included below. Write a fucntion that takes in two pointers to a linked list storing 2 strings
-    // and prints out the letters in the string in alternating order, starting with the first letter of the string. If one string runs out of letters, just skip over it
-    // if the two strings passed to the function were hello and computer then function should print hceolmlpouter
+
+    // create temp nodes storing the data
+    node *temp1 = word1->data;
+    node *temp2 = word2->data;
+
+    // Loop through both until temp1 and temp2 are NULL
+    while (temp1 != NULL || temp2 != NULL)
+    {
+        if (temp1 != NULL)
+        {
+            printf("%c", temp1->data);
+            temp1 = temp1->next;
+        }
+        if (temp2 != NULL)
+        {
+            printf("%c", temp2->data);
+            temp2 = temp2->next;
+        }
+    }
 }
 
 node *deleteMe(node *head, node *me)
 {
-    // write a function that takes in a pointer to the head of a doubly linked list(head) and a pointer to a node in that list (me), removes that node(me) from the list
-    // and returns a pointer to the head node of the resulting doubly linked list. you may assume that both head and me are not NULL, and that me points to a node in the list
-    // pointed to by head
+
+    // check if the head is to be deleted
+
+    if (head == me)
+    {
+        head = me->next;
+    }
+
+    // update the next pointer of the previous node, if it exists
+
+    if (me->prev != NULL)
+    {
+
+        me->prev->next = me->next;
+    }
+
+    if (me->next != NULL)
+    {
+        me->next->prev = me->prev;
+    }
+    free(me);
+
+    return head;
 }
 
 void insertAfterN(node *head, int M, int N)
 {
-    // write a function insertAfterN that takes the head of a linked list and two integers M and N ( M != N) and inserts M after all nodes containing N
-    //  example if M = 200 and N = 6, then the linked list 3, 6, 4, 6, 6 , 5 will be changed to 3, 6, 200, 4, 6, 200, 6, 200, 5
+    if (head == NULL)
+    {
+        return NULL;
+    }
+
+    // temp node to store the head
+    node *current = head;
+
+    // loop through the list
+    while (current->next != NULL)
+    {
+        // if the current node is == to N
+        if (current->data == N)
+        {
+            // create a temp node to store M
+            node *temp = malloc(sizeof(node));
+            temp->data = M;             // store M
+            temp->next = current->next; // insert M after current
+            current->next = temp;       // insert M after current
+        }
+        else
+        {
+            // continue traversing if current data is not N
+            current = current->next;
+        }
+    }
 }
 
 void markEven(node *head)
 {
-    // Supposed we have a linked list implemented with the structure below. Write a Function that will take in a pointer to the head of a list and inserts a node storing -1
-    //  after each even value in the list. If the list is empty of there are no even values in the list, no modifications should be made to the list
-    //  (For example, if the initial list had 2, 6, 7, 1, 3, and 8, the resulting list would have 2, -1, 6, -1, 7, 1, 8, -1.)
+    node *current = head;
+
+    while (current != NULL || current)
+    {
+        if (current->data % 2 == 0)
+        {
+            node *temp = malloc(sizeof(node));
+            temp->data = -1;
+            temp->next = current->next;
+            current->next = temp;
+
+            // Move to the next node after the inserted one
+            current = temp->next;
+        }
+        else
+        {
+            current = current->next;
+        }
+    }
 }
 
 node *make_circle(struct node *head)
@@ -256,23 +330,3 @@ int main()
     printf("%d\n", numDirChange(my_list));
     printList(my_list);
 }
-
-// , 2, 2, 5, 6, 4, 8, 3
-/*    for (int i = 0; i < 10; i++)
-    {
-        insertHead(my_list, i);
-    }
-    // Inserts numbers through the middle
-    for (int i = 0; i < 10; i++)
-    {
-        insertTail(my_list, i);
-    }
-    // inserts value in the middle
-    for (int i = 0; i < 1; i++)
-    {
-        insertMiddle(my_list, i);
-    }
-    for (int i = 0; i < 2; i++)
-    {
-        freeNode(my_list, i);
-    }*/
