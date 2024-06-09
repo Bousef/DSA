@@ -1,4 +1,3 @@
-// After the completion of this work on doing 2 easy leetcode problems 2 medium and see how you feel from there on linkedList
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -58,6 +57,24 @@ node *insertTail(list *list, int data)
         newNode->next = NULL;
         list->tail = newNode;
     }
+}
+
+node *reverseList(list *list)
+{
+    node *current = list->head;
+    node *prev = NULL;
+    node *next = NULL;
+
+    while (current != NULL)
+    {
+        next = current->next; // set the next node to the currents next
+        current->next = prev; // set the currents next to NULL esentially setting the current heads next to nULL
+        prev = current;       // update prev to be at the end of the list
+        current = next;       // move to the next node in the list
+    }
+    list->tail = list->head; // update the tail to be the current head of the list
+    list->head = prev;       // update head to be the tail
+    return prev;
 }
 
 void insertMiddle(list *list, int data)
@@ -172,28 +189,28 @@ int check_all_even(list *my_list)
     return check_all_even(&temp_list);
 }
 
-void printMixed(node *word1, node *word2)
-{
+// void printMixed(node *word1, node *word2)
+// {
 
-    // create temp nodes storing the data
-    node *temp1 = word1->data;
-    node *temp2 = word2->data;
+//     // create temp nodes storing the data
+//     node *temp1 = word1->data;
+//     node *temp2 = word2->data;
 
-    // Loop through both until temp1 and temp2 are NULL
-    while (temp1 != NULL || temp2 != NULL)
-    {
-        if (temp1 != NULL)
-        {
-            printf("%c", temp1->data);
-            temp1 = temp1->next;
-        }
-        if (temp2 != NULL)
-        {
-            printf("%c", temp2->data);
-            temp2 = temp2->next;
-        }
-    }
-}
+//     // Loop through both until temp1 and temp2 are NULL
+//     while (temp1 != NULL || temp2 != NULL)
+//     {
+//         if (temp1 != NULL)
+//         {
+//             printf("%c", temp1->data);
+//             temp1 = temp1->next;
+//         }
+//         if (temp2 != NULL)
+//         {
+//             printf("%c", temp2->data);
+//             temp2 = temp2->next;
+//         }
+//     }
+// }
 
 node *deleteMe(node *head, node *me)
 {
@@ -226,7 +243,7 @@ void insertAfterN(node *head, int M, int N)
 {
     if (head == NULL)
     {
-        return NULL;
+        return;
     }
 
     // temp node to store the head
@@ -317,16 +334,18 @@ int main()
 
     my_list->head = my_list->tail = NULL;
     // inserts numbers from the head
-    insertTail(my_list, 2);
-    insertTail(my_list, 2);
-    insertTail(my_list, 2);
-    insertTail(my_list, 2);
     insertTail(my_list, 1);
-    insertTail(my_list, 6);
-    insertTail(my_list, 4);
-    insertTail(my_list, 8);
     insertTail(my_list, 2);
-    printf("%d\n", check_all_even(my_list));
-    printf("%d\n", numDirChange(my_list));
+    insertTail(my_list, 3);
+    insertTail(my_list, 4);
+    insertTail(my_list, 5);
+    insertTail(my_list, 6);
+    insertTail(my_list, 7);
+    insertTail(my_list, 8);
+    insertTail(my_list, 9);
+    // printf("%d\n", check_all_even(my_list));
+    // printf("%d\n", numDirChange(my_list));
+    reverseList(my_list);
+
     printList(my_list);
 }
