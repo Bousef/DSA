@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 typedef struct node
 {
@@ -30,14 +31,15 @@ node *insertHead(list *list, int data)
 {
     node *newNode = createNode(data); // create the new Node
 
-    if (list->head == NULL)
+    if (list->head == NULL) // if the list is empty
     {
-        list->head = list->tail = newNode;
+        list->head = list->tail = newNode; // set the head and tail to the new node
     }
     else
     {
+        // if list is not empty set the new nodes next to the current head
         newNode->next = list->head;
-        list->head = newNode;
+        list->head = newNode; // update the current head to the new Node
     }
 }
 
@@ -46,14 +48,16 @@ node *insertTail(list *list, int data)
     // create a new Node
     node *newNode = createNode(data);
 
-    if (list->head == NULL)
+    if (list->head == NULL) // if the list is empty
     {
         // if no nodes in the list currently set both the head and tail to NULL
         list->head = list->tail = newNode;
     }
     else
     {
+        // set the next of the current tail to the new Node
         list->tail->next = newNode;
+        // set the new Node to be the new tail so we set its next to NULL and set list->tail to new node
         newNode->next = NULL;
         list->tail = newNode;
     }
@@ -61,19 +65,34 @@ node *insertTail(list *list, int data)
 
 node *reverseList(list *list)
 {
+
+    // we start by setting the current node to the head of the list
     node *current = list->head;
+    // we initialize the prev and next pointers to NULL so that we can update them as we traverse the list
     node *prev = NULL;
     node *next = NULL;
 
+    // while the current node is not NULL(meaning we have not reached the end of the list )
     while (current != NULL)
     {
-        next = current->next; // set the next node to the currents next
-        current->next = prev; // set the currents next to NULL esentially setting the current heads next to nULL
-        prev = current;       // update prev to be at the end of the list
-        current = next;       // move to the next node in the list
+        // set the next pointer to the current nodes next because we will be updating the current nodes next
+        next = current->next;
+        // set the current nodes next to the previous node
+        current->next = prev;
+        // set the previous node to the current node
+        prev = current;
+        // set the current node to the next node
+        current = next;
+
+        // example
+        //  1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> NULL
+        // iteration 1 will be 1->NULL
+        // iteration 2 will be
     }
-    list->tail = list->head; // update the tail to be the current head of the list
-    list->head = prev;       // update head to be the tail
+    // set the head to the tail and the tail to the head to reverse the list
+    list->tail = list->head;
+    // set the head to the previous node
+    list->head = prev;
     return prev;
 }
 
@@ -313,6 +332,46 @@ node *make_circle(struct node *head)
     return head;
 }
 
+void findPairSum(int x)
+{
+    list *my_list;
+    // Initialize two pointer variables to find the candidate elements in the sorted doubly linked list
+    node *first = my_list->head;
+    node *last = my_list->head;
+    bool found = false;
+
+    while (last != NULL)
+    {
+        last = last->next;
+    }
+
+    while (first != last && last->next != first)
+    {
+        if (first->data + last->data == x)
+        {
+            // we found a pair
+            printf("%d , %d ", first->data, last->data);
+            first = first->next;
+            last = last->prev;
+        }
+        else
+        {
+            if (first->data + last->data < x)
+            {
+                first = first->next;
+            }
+            else
+            {
+                last = last->prev;
+            }
+        }
+        if (first == last)
+        {
+            printf("No pairs found");
+        }
+    }
+}
+
 // print function
 list *printList(list *my_List)
 {
@@ -321,7 +380,7 @@ list *printList(list *my_List)
     while (cur != NULL)
     {
         // Print the list
-        printf("%d -> ", cur->data);
+        printf("%d<-->", cur->data);
         // Move to the next node
         cur = cur->next;
     }
@@ -345,7 +404,8 @@ int main()
     insertTail(my_list, 9);
     // printf("%d\n", check_all_even(my_list));
     // printf("%d\n", numDirChange(my_list));
-    reverseList(my_list);
+    // reverseList(my_list);
 
     printList(my_list);
+    findPairSum(10);
 }
