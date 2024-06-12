@@ -110,6 +110,28 @@ node *reverseDoublyLinkedList(list *my_list)
 
     return prev;
 }
+
+void removeFromHead(list *my_list)
+{
+    node *temp = NULL;
+
+    if (my_list->head == NULL)
+    {
+        return NULL;
+    }
+    if (my_list->head->next == NULL)
+    {
+        free(my_list->head);
+        my_list->tail = NULL;
+    }
+    else
+    {
+        temp = my_list->head;
+        my_list->head = my_list->head->next;
+        my_list->head->prev = NULL;
+        free(temp);
+    }
+}
 int main()
 {
     list *my_list = malloc(sizeof(list));
@@ -126,5 +148,6 @@ int main()
     insertHead(my_list, 10);
     insertTail(my_list, 11);
     reverseDoublyLinkedList(my_list);
+    removeFromHead(my_list);
     printListForward(my_list);
 }
